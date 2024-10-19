@@ -1,4 +1,4 @@
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react";
+import { Home, Hospital, Inbox, Dna, Speaker, Activity } from "lucide-react";
 
 import {
   Sidebar,
@@ -15,28 +15,28 @@ import {
 const items = [
   {
     title: "Home",
-    url: "#",
+    url: "/user",
     icon: Home,
   },
   {
-    title: "Inbox",
-    url: "#",
-    icon: Inbox,
+    title: "Announcments",
+    url: "/user/announcements",
+    icon: Speaker,
   },
   {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar,
+    title: "Disease Info",
+    url: "/user/disease-info",
+    icon: Dna,
   },
   {
-    title: "Search",
-    url: "#",
-    icon: Search,
+    title: "Health Updates",
+    url: "/user/health-updates",
+    icon: Activity,
   },
   {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
+    title: "Vaccination Center",
+    url: "/user/vaccination-center",
+    icon: Hospital,
   },
 ];
 
@@ -45,7 +45,8 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          <SidebarGroupLabel>Health-App</SidebarGroupLabel>
+
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
