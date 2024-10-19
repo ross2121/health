@@ -1,4 +1,4 @@
-import { Home, Hospital, Inbox, Dna, Speaker, Activity } from "lucide-react";
+import { Home, Hospital, Dna, Speaker, Activity } from "lucide-react";
 
 import {
   Sidebar,
