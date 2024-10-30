@@ -1,14 +1,17 @@
-import { Button } from "@/components/ui/button";
+import Footer from "@/components/Footer";
+import Header from "@/components/Header";
+import Hero from "@/components/HeroSection";
+import Services from "@/components/Services";
+import Statistics from "@/components/Statistics";
 
 export default function Home() {
   return (
-    <div className="container mx-auto p-8">
-      <h1 className="text-4xl font-bold">Welcome to the Health Platform</h1>
-      <p className="mt-4 text-lg">
-        Stay updated with the latest health alerts, disease information, and
-        vaccination schedules.
-      </p>
-      <Button className="mt-6">Get Started</Button>
+    <div className="bg-white text-gray-900 mx-auto">
+      <Header />
+      <Hero />
+      <Services />
+      <Statistics />
+      <Footer />
     </div>
   );
 }
