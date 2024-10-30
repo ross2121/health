@@ -6,7 +6,6 @@ import { DefaultZoomControls } from "../map/zoomcontrol";
 import { CenterOfMap } from "../map/zoomcontrol";
 import { useState } from "react";
 import axios from "axios";
-import z from "zod";
 import { useRouter } from "next/navigation";
 import "@/components/map/map.css";
 import { Input } from "./input";
@@ -25,6 +24,7 @@ export const HospitalForm = () => {
     Precaution: "",
     Severe: "",
     Address: "",
+    Pincode:"",
     lat: 0,
     lng: 0,
   });
@@ -51,9 +51,11 @@ export const HospitalForm = () => {
       if (response.status === 200) {
         router.push("/");
       }
-    } catch (error: unknown) {
+    } catch (error) {
       setError("Form submission failed. Please try again later.");
+      console.log(error);
     } finally {
+
       setLoading(false);
     }
   };
@@ -67,31 +69,7 @@ export const HospitalForm = () => {
     }));
   };
 
-  const showLocation = async () => {
-    if (!form.Address) {
-      setError("Please provide an address to locate.");
-      return;
-    }
-    try {
-      const response = await axios.get(
-        `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
-          form.Address
-        )}.json?access_token=pk.eyJ1IjoiaWFta2FydGhpY2siLCJhIjoiY2t4b3AwNjZ0MGtkczJub2VqMDZ6OWNrYSJ9.-FMKkHQHvHUeDEvxz2RJWQ`
-      );
-      if (response.data.features && response.data.features.length > 0) {
-        const location = response.data.features[0].center;
-        setForm((prevForm) => ({
-          ...prevForm,
-          lat: location[1],
-          lng: location[0],
-        }));
-      } else {
-        setError("Could not find the location. Please check the address.");
-      }
-    } catch (error) {
-      setError("Error fetching location. Please try again later.");
-    }
-  };
+  
 
   const openInMaps = () => {
     if (form.lat && form.lng) {
@@ -180,6 +158,18 @@ export const HospitalForm = () => {
                 disabled={loading}
               />
             </LabelInputContainer>
+            <LabelInputContainer>
+              <Label htmlFor="pincode">PinCode</Label>
+              <Input
+                id="pincode"
+                placeholder="282007"
+                type="text"
+                value={form.Pincode}
+                onChange={(e) => setForm({ ...form, Pincode: e.target.value })}
+                className="text-black"
+                disabled={loading}
+              />
+            </LabelInputContainer>
           </div>
         </div>
 
@@ -239,26 +229,25 @@ const LabelInputContainer = ({
   return <div className={cn("flex flex-col space-y-2 w-full", className)}>{children}</div>;
 };
 
-export const SearchBox = ({
+export function SearchBox({
   onChange,
 }: {
-  onChange: ({ lat, lng }: { lat: number; lng: number }) => void;
-}) => {
+  onChange: ({ lat, lng }: { lat: number; lng: number; }) => void;
+}) {
   const { current: map } = useMap();
   return (
     <div className="mid">
-    <SearchPlace
-      onLocationChange={(locationInfo) => {
-        const lat = locationInfo.latitude;
-        const lng = locationInfo.longitude;
-        onChange({ lat, lng });
+      <SearchPlace
+        onLocationChange={(locationInfo) => {
+          const lat = locationInfo.latitude;
+          const lng = locationInfo.longitude;
+          onChange({ lat, lng });
 
-        map?.flyTo({
-          center: { lat, lng },
-          essential: true,
-        });
-      }}
-    />
+          map?.flyTo({
+            center: { lat, lng },
+            essential: true,
+          });
+        } } />
     </div>
   );
-};
+}

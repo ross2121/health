@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 
 export type LocationInfo = { placeName: string; latLng: [number, number] };
+interface X{
+  place_name:string,
+  center:number[],
 
+}
 export const useSearchLocation = () => {
   const [searchText, setSearchText] = useState('');
   const [loading, setLoading] = useState(false);
@@ -26,7 +30,7 @@ export const useSearchLocation = () => {
         return response.json();
       })
       .then((data) => {
-        const filtered = data.features?.map((x: any) => ({
+        const filtered = data.features?.map((x:X) => ({
           placeName: x.place_name,
           latLng: [x.center[1], x.center[0]],
         }));
@@ -39,14 +43,13 @@ export const useSearchLocation = () => {
   return { loading, searchText, setSearchText, locationInfo };
 };
 
-// Debounce hook
 export const useDebouncedValue = <T>(value: T, delay: number = 1000): T => {
   const [debouncedValue, setDebouncedValue] = useState(value);
 
   useEffect(() => {
     const handler = setTimeout(() => setDebouncedValue(value), delay);
 
-    return () => clearTimeout(handler); // Cleanup on value or delay change
+    return () => clearTimeout(handler); 
   }, [value, delay]);
 
   return debouncedValue;

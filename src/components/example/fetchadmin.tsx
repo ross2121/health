@@ -19,25 +19,24 @@ export const HospitalMap = () => {
   const [error, setError] = useState("");
   const { current: map } = useMap();
 
-  let email: string | null;
+  let email:string|null;
   if (typeof window !== "undefined") {
-    email = window.localStorage.getItem("user");
+      email = window.localStorage.getItem("user");
   }
-
   useEffect(() => {
     const fetchHospitals = async () => {
       try {
-        if (email != null) {
-          const response = await axios.get(`/api/hos?email=${email}`);
-          setHospitals(response.data.admin);
-          console.log(response.data);
-        }
+        if(email!=null){
+        const response = await axios.get(`/api/hos?email=${email}`);
+        setHospitals(response.data.admin);
+        console.log(response.data);}
       } catch (error) {
         setError("Failed to fetch hospital data. Please try again later.");
+        console.log(error);
       }
     };
     fetchHospitals();
-  }, [email]);
+  }, []);
 
   const handleLocationChange = ({ lat, lng }: { lat: number; lng: number }) => {
     map?.flyTo({
@@ -47,43 +46,43 @@ export const HospitalMap = () => {
   };
 
   return (
-    <div style={{ position: "relative", width: "100vw", height: "100vh" }}>
-      <Map
-        initialViewState={{
-          latitude: 37.7749, // Default latitude
-          longitude: -122.4194, // Default longitude
-          zoom: 10,
-        }}
-        style={{ width: "50vw", height: "100vh" }}
-        mapStyle="mapbox://styles/mapbox/streets-v11"
-        mapboxAccessToken="pk.eyJ1IjoiaWFta2FydGhpY2siLCJhIjoiY2t4b3AwNjZ0MGtkczJub2VqMDZ6OWNrYSJ9.-FMKkHQHvHUeDEvxz2RJWQ"
-      >
-        {hospitals.map((hospital) => (
-          <Marker
-            key={hospital.id}
-            latitude={hospital.lat}
-            longitude={hospital.lng}
-            anchor="bottom"
-          >
-            {/* <img src="vaccination.png" alt="Hospital marker" className="h-8 w-8" /> */}
-          </Marker>
-        ))}
-        
-        <NavigationControl position="top-left" />
-        <GeolocateControl position="top-left" />
+    <div className="">
+      {/* <HospitalForm /> */}
+      <div>
+        <Map
+          initialViewState={{
+            latitude:20, // Default latitude
+            longitude: 78, // Default longitude
+            zoom: 10,
+          }}
+          style={{ width: "100%", height: "500px" }}
+          mapStyle="mapbox://styles/mapbox/streets-v11"
+          mapboxAccessToken="pk.eyJ1IjoiaWFta2FydGhpY2siLCJhIjoiY2t4b3AwNjZ0MGtkczJub2VqMDZ6OWNrYSJ9.-FMKkHQHvHUeDEvxz2RJWQ"
+        >
+          
+          {hospitals.map((hospital) => (
+            <Marker
+              key={hospital.id}
+              latitude={hospital.lat}
+              longitude={hospital.lng}
+              anchor="bottom"
+            >
+              {/* <img src="vaccination.png" alt="Hospital marker" className="h-8 w-8" /> */}
+            </Marker>
+          ))}
 
-        <div className="absolute top-10 left-10">
-          <SearchBox onChange={handleLocationChange} />
-        </div>
-      </Map>
-      <Button
-        onClick={() => window.open("https://www.google.com/maps", "_blank")}
-        type="button"
-        className="absolute top-4 right-4 mt-3"
-      >
-        Open in Google Maps
-      </Button>
-      {error && <p className="text-red-500 absolute bottom-4 left-4">{error}</p>}
+          <NavigationControl position="top-left" />
+          <GeolocateControl position="top-left" />
+
+          <div className="absolute top-10 left-10">
+            <SearchBox onChange={handleLocationChange} />
+          </div>
+        </Map>
+        <Button onClick={() => window.open("https://www.google.com/maps", "_blank")} type="button" className="mt-3">
+          Open in Google Maps
+        </Button>
+        {error && <p className="text-red-500">{error}</p>}
+      </div>
     </div>
   );
 };

@@ -1,11 +1,11 @@
 "use server"
 import { NextRequest, NextResponse } from 'next/server';
 import { patientmap } from '../../../components/atoms/cotrollers/hosptial';
-import { NextApiRequest, NextApiResponse } from 'next';
-export const GET=async(req:NextRequest, res: NextApiResponse)=>{
+
+export const GET=async(req:NextRequest,)=>{
   try {
-    return await patientmap(req, res);
-  } catch (error:any) {
+    return await patientmap(req);
+  } catch (error) {
     console.log(error);
     return NextResponse.json({ message: 'Message not allowed',error}, { status: 405 });
   }

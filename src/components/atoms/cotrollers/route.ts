@@ -1,14 +1,10 @@
 import { PrismaClient } from '@prisma/client';
-//@ts-ignore
 import bcrypt from 'bcrypt';
-//@ts-ignore
 import jwt from 'jsonwebtoken';
-//@ts-ignore
 import otp from 'otp-generator';
-//@ts-ignore
+
 import nodemailer from 'nodemailer';
-import { NextApiRequest, NextApiResponse } from 'next';
-//@ts-ignore
+import { NextApiResponse } from 'next';
 import dotenv from 'dotenv';
 import { NextResponse } from 'next/server';
 dotenv.config();
@@ -54,7 +50,7 @@ export const Register = async (req:Request, res: NextApiResponse) => {
     return NextResponse.json({ error: error || 'Internal server error' }, { status: 500 });
   }
 };
-export const Login = async (req:Request, res: NextApiResponse) => {
+export const Login = async (req:Request) => {
   try {
     const body=await req.json();
     const { email, password } = body;
@@ -183,7 +179,7 @@ await prisma.otp.create({
   //   });
   // } else {
     try {
-      transporter.sendMail(verifyotp, (err:any) => {
+      transporter.sendMail(verifyotp, (err) => {
         if (err) {
           return res.status(500).json({ message: "Error sending OTP", error: err });
         } else {

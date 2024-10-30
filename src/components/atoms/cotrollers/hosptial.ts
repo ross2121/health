@@ -1,15 +1,14 @@
 import { PrismaClient } from "@prisma/client";
-import { error } from "console";
-import { NextApiRequest, NextApiResponse } from 'next';
+
 import { NextRequest, NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
 
-export const hospital = async (req: Request, res: NextApiResponse) => {
+export const hospital = async (req: Request) => {
     try {
         const body = await req.json();
         // const {email}=body;
-        const { email,Name,Disease,Precaution,Severe,Address,lat,lng,admin_email,patient_email} = body;
+        const {Name,Disease,Precaution,Severe,Address,lat,lng,admin_email,patient_email} = body;
         const admin = await prisma.admin.findUnique({
             where: { 
                 email:admin_email, 
@@ -38,7 +37,7 @@ export const hospital = async (req: Request, res: NextApiResponse) => {
         return NextResponse.json({ error:"Internal service error" }, { status: 500 });
     }
 };
-export const patient=async(req:Request,res:NextApiResponse)=>{
+export const patient=async(req:Request)=>{
    try{ const body=await req.json();
     const {email}=body;
     const admin=prisma.admin.findMany({
@@ -53,7 +52,7 @@ export const patient=async(req:Request,res:NextApiResponse)=>{
     }
 
 }
-export const patientmap=async(req:NextRequest,res:NextApiResponse)=>{
+export const patientmap=async(req:NextRequest)=>{
 try {
     // const body=await req.json();
     const email=req.nextUrl.searchParams.get("email");
