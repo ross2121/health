@@ -8,7 +8,7 @@ export const hospital = async (req: Request) => {
     try {
         const body = await req.json();
         // const {email}=body;
-        const {Name,Disease,Precaution,Severe,Address,lat,lng,admin_email,patient_email} = body;
+        const {Name,Disease,Precaution,Severe,Address,lat,lng,admin_email,patient_email,Pincode} = body;
         const admin = await prisma.admin.findUnique({
             where: { 
                 email:admin_email, 
@@ -28,7 +28,8 @@ export const hospital = async (req: Request) => {
                 admin_email,
                 patient_email,
                 Address,
-              adminid:admin.id
+              adminid:admin.id,
+                Pincode
             }
         })
         return NextResponse.json({ newHospital }, { status: 200 });
@@ -71,4 +72,25 @@ try {
 } catch (error) {
      console.log("Error fetching all the users",error);
 }
+}
+export const patientmapuser=async(req:NextRequest)=>{
+    try {
+        const email=req.nextUrl.searchParams.get("email");
+        if (!email || typeof email !== "string") {
+            return  NextResponse.json({error:"String iss not"},{status:500});
+        }
+        const user=await prisma.user.findUnique({
+            where:{
+                email:email
+            }
+        })
+        const finddisease=await prisma.disease.findMany({
+            where:{
+                Pincode:user?.Pincode
+            }
+        })
+        return NextResponse.json({finddisease},{status:200});
+    } catch (error) {
+        console.log("Error fetching all the users",error);
+    }
 }

@@ -48,7 +48,7 @@ export default function SignupFormDemo() {
     try {
       const response = await axios.post("/api/userregister", signupdata);
       if (response.status === 200) {
-        router.push("/otpu");
+        router.push("/user/auth/otpu");
         localStorage.setItem("tempUserData", JSON.stringify(signupdata));
       }
     } 

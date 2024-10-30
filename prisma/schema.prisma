@@ -52,6 +52,8 @@ model Disease{
   Address            String
   lat                 Float
   lng                Float
+  File                String?
+  Pincode             String
   admin       Admin @relation(fields: [adminid],references: [id])
   // user         User  @relation(fields: [userid],references: [id])
   // userid       Int
